@@ -15,12 +15,25 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid(7))
-  email         String    @unique
-  password      String
-  name          String
-  isActive      Boolean   @default(true)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  lastLogin     DateTime?
+  id        String    @id @default(uuid(7))
+  email     String    @unique
+  password  String
+  name      String
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  lastLogin DateTime?
+}
+
+model Profile {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  phoneNumber String?
+  address     String?
+  dateOfBirth DateTime?
+  gender      String? // 'Laki', 'Perempuan'
+  photoUrl    String?
+  bio         String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
