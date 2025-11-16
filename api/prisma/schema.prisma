@@ -76,3 +76,17 @@ model Attendance {
   notes          String?
   createdAt      DateTime @default(now())
 }
+
+model Material {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  category    String   // 'tahsin', 'tajwid', 'tahfidz', 'teori'
+  contentType String   // 'pdf', 'video', 'audio', 'text'
+  fileUrl     String?
+  duration    Int?     // in minutes
+  orderIndex  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
