@@ -66,3 +66,13 @@ model Class {
   updatedAt         DateTime  @updatedAt
 }
 
+model Attendance {
+  id             String   @id @default(uuid())
+  enrollmentId   String
+  scheduleId     String
+  attendanceDate DateTime
+  checkInTime    String?  // Store as HH:mm:ss format
+  status         String   // 'present', 'absent', 'late', 'excused'
+  notes          String?
+  createdAt      DateTime @default(now())
+}
