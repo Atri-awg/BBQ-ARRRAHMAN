@@ -73,6 +73,18 @@ model Class {
   updatedAt         DateTime  @updatedAt
 }
 
+model Enrollment {
+  id          String    @id @default(uuid())
+  userId      String
+  classId     String
+  status      String    @default("active") // 'active', 'completed', 'dropped'
+  enrolledAt  DateTime  @default(now())
+  completedAt DateTime?
+  finalGrade  Float?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 model Attendance {
   id             String   @id @default(uuid())
   enrollmentId   String
