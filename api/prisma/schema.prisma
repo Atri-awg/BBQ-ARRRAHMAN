@@ -148,3 +148,20 @@ model Progress {
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 }
+
+model Assessment {
+  id                 String   @id @default(uuid())
+  enrollmentId       String
+  evaluatorId        String
+  assessmentType     String   // 'tahsin', 'tajwid', 'tahfidz', 'ujian'
+  category           String   // 'harian', 'mingguan', 'bulanan', 'semester'
+  score              Float
+  maxScore           Float    @default(100)
+  grade              String?  // 'A', 'B', 'C', 'D', 'E'
+  criteria           Json?    // Detailed evaluation criteria
+  feedback           String?
+  audioRecordingUrl  String?
+  assessmentDate     DateTime
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
