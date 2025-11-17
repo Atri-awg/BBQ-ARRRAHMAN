@@ -206,3 +206,15 @@ model Announcement {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
+
+model Message {
+  id          String    @id @default(uuid())
+  senderId    String
+  recipientId String
+  subject     String?
+  content     String
+  isRead      Boolean   @default(false)
+  replyToId   String?
+  sentAt      DateTime  @default(now())
+  readAt      DateTime?
+}
