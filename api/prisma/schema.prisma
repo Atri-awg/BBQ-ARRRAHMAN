@@ -85,6 +85,21 @@ model Enrollment {
   updatedAt   DateTime  @updatedAt
 }
 
+model Schedule {
+  id           String    @id @default(uuid())
+  classId      String
+  dayOfWeek    String?   // 'senin', 'selasa', etc. for recurring
+  startTime    String    // Store as HH:mm format
+  endTime      String    // Store as HH:mm format
+  location     String?
+  roomNumber   String?
+  isRecurring  Boolean   @default(true)
+  specificDate DateTime? // For non-recurring schedules
+  status       String    @default("scheduled") // 'scheduled', 'completed', 'cancelled'
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
 model Attendance {
   id             String   @id @default(uuid())
   enrollmentId   String
