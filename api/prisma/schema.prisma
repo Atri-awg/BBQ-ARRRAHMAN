@@ -177,3 +177,18 @@ model Achievement {
   earnedAt     DateTime @default(now())
   createdAt    DateTime @default(now())
 }
+
+// Komunikasi dan notifikasi
+
+model Notification {
+  id       String    @id @default(uuid())
+  userId   String
+  title    String
+  message  String
+  type     String    // 'schedule', 'assessment', 'announcement', 'reminder'
+  priority String    @default("medium") // 'low', 'medium', 'high'
+  isRead   Boolean   @default(false)
+  metadata Json?
+  createdAt DateTime @default(now())
+  readAt   DateTime?
+}
