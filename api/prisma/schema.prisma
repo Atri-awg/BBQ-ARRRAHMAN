@@ -24,6 +24,20 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   lastLogin DateTime?
+
+  profile              Profile?
+  userRoles            UserRole[]
+  teachingClasses      Class[]              @relation("PengajarClasses")
+  enrollments          Enrollment[]
+  assessmentsGiven     Assessment[]         @relation("Evaluator")
+  notifications        Notification[]
+  announcementsCreated Announcement[]       @relation("AnnouncementCreator")
+  sentMessages         Message[]            @relation("MessageSender")
+  receivedMessages     Message[]            @relation("MessageRecipient")
+
+  @@index([email])
+  @@index([isActive])
+  @@map("users")
 }
 
 model Profile {
@@ -37,6 +51,12 @@ model Profile {
   bio         String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("profiles")
 }
 
 model Role {
@@ -45,6 +65,12 @@ model Role {
   description String?
   permissions Json?
   createdAt   DateTime @default(now())
+
+  // Relations
+  userRoles UserRole[]
+
+  @@index([name])
+  @@map("roles")
 }
 
 model UserRole {
@@ -52,6 +78,15 @@ model UserRole {
   userId     String
   roleId     String
   assignedAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+  @@map("user_roles")
 }
 
 // Skema kelas 
@@ -71,6 +106,21 @@ model Class {
   endDate           DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+
+
+  // Relations
+  pengajar        User             @relation("PengajarClasses", fields: [pengajarId], references: [id])
+  enrollments     Enrollment[]
+  schedules       Schedule[]
+  classMaterials  ClassMaterial[]
+  achievements    Achievement[]
+  announcements   Announcement[]
+
+  @@index([pengajarId])
+  @@index([status])
+  @@index([type])
+  @@index([level])
+  @@map("classes")
 }
 
 model Enrollment {
@@ -83,6 +133,21 @@ model Enrollment {
   finalGrade  Float?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+
+  // Relations
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class        Class         @relation(fields: [classId], references: [id], onDelete: Cascade)
+  attendances  Attendance[]
+  progresses   Progress[]
+  assessments  Assessment[]
+  achievements Achievement[]
+
+  @@unique([userId, classId])
+  @@index([userId])
+  @@index([classId])
+  @@index([status])
+  @@map("enrollments")
 }
 
 model Schedule {
@@ -98,6 +163,15 @@ model Schedule {
   status       String    @default("scheduled") // 'scheduled', 'completed', 'cancelled'
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+
+  // Relations
+  class       Class        @relation(fields: [classId], references: [id], onDelete: Cascade)
+  attendances Attendance[]
+
+  @@index([classId])
+  @@index([specificDate])
+  @@index([status])
+  @@map("schedules")
 }
 
 model Attendance {
@@ -109,6 +183,18 @@ model Attendance {
   status         String   // 'present', 'absent', 'late', 'excused'
   notes          String?
   createdAt      DateTime @default(now())
+
+
+  // Relations
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  schedule   Schedule   @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@unique([enrollmentId, scheduleId, attendanceDate])
+  @@index([enrollmentId])
+  @@index([scheduleId])
+  @@index([attendanceDate])
+  @@index([status])
+  @@map("attendances")
 }
 
 model Material {
@@ -122,6 +208,14 @@ model Material {
   orderIndex  Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  // Relations
+  classMaterials ClassMaterial[]
+  progresses     Progress[]
+
+  @@index([category])
+  @@index([contentType])
+  @@map("materials")
 }
 
 model ClassMaterial {
@@ -131,6 +225,15 @@ model ClassMaterial {
   orderIndex Int      @default(0)
   isRequired Boolean  @default(true)
   assignedAt DateTime @default(now())
+
+  // Relations
+  class    Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@unique([classId, materialId])
+  @@index([classId])
+  @@index([materialId])
+  @@map("class_materials")
 }
 
 model Progress {
@@ -147,6 +250,16 @@ model Progress {
   notes                String?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
+
+  // Relations
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  material   Material?  @relation(fields: [materialId], references: [id], onDelete: SetNull)
+
+  @@index([enrollmentId])
+  @@index([materialId])
+  @@index([status])
+  @@index([juzNumber])
+  @@map("progresses")
 }
 
 model Assessment {
@@ -164,6 +277,16 @@ model Assessment {
   assessmentDate     DateTime
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+
+  // Relations
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  evaluator  User       @relation("Evaluator", fields: [evaluatorId], references: [id])
+
+  @@index([enrollmentId])
+  @@index([evaluatorId])
+  @@index([assessmentType])
+  @@index([assessmentDate])
+  @@map("assessments")
 }
 
 model Achievement {
@@ -176,6 +299,15 @@ model Achievement {
   iconUrl      String?
   earnedAt     DateTime @default(now())
   createdAt    DateTime @default(now())
+
+  // Relations
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  class      Class      @relation(fields: [classId], references: [id], onDelete: Cascade)
+
+  @@index([enrollmentId])
+  @@index([classId])
+  @@index([badgeType])
+  @@map("achievements")
 }
 
 // Komunikasi dan notifikasi
@@ -191,6 +323,15 @@ model Notification {
   metadata Json?
   createdAt DateTime @default(now())
   readAt   DateTime?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([type])
+  @@index([createdAt])
+  @@map("notifications")
 }
 
 model Announcement {
@@ -205,6 +346,17 @@ model Announcement {
   expiresAt      DateTime?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+
+  // Relations
+  creator User   @relation("AnnouncementCreator", fields: [createdBy], references: [id])
+  class   Class? @relation(fields: [classId], references: [id], onDelete: SetNull)
+
+  @@index([createdBy])
+  @@index([classId])
+  @@index([targetAudience])
+  @@index([publishedAt])
+  @@index([isPinned])
+  @@map("announcements")
 }
 
 model Message {
@@ -217,4 +369,16 @@ model Message {
   replyToId   String?
   sentAt      DateTime  @default(now())
   readAt      DateTime?
+
+  // Relations
+  sender    User     @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User     @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  replyTo   Message? @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies   Message[] @relation("MessageReplies")
+
+  @@index([senderId])
+  @@index([recipientId])
+  @@index([isRead])
+  @@index([sentAt])
+  @@map("messages")
 }
