@@ -25,15 +25,16 @@ model User {
   updatedAt DateTime  @updatedAt
   lastLogin DateTime?
 
+  // Relations
   profile              Profile?
   userRoles            UserRole[]
-  teachingClasses      Class[]              @relation("PengajarClasses")
+  teachingClasses      Class[]        @relation("PengajarClasses")
   enrollments          Enrollment[]
-  assessmentsGiven     Assessment[]         @relation("Evaluator")
+  assessmentsGiven     Assessment[]   @relation("Evaluator")
   notifications        Notification[]
-  announcementsCreated Announcement[]       @relation("AnnouncementCreator")
-  sentMessages         Message[]            @relation("MessageSender")
-  receivedMessages     Message[]            @relation("MessageRecipient")
+  announcementsCreated Announcement[] @relation("AnnouncementCreator")
+  sentMessages         Message[]      @relation("MessageSender")
+  receivedMessages     Message[]      @relation("MessageRecipient")
 
   @@index([email])
   @@index([isActive])
@@ -107,14 +108,13 @@ model Class {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
-
   // Relations
-  pengajar        User             @relation("PengajarClasses", fields: [pengajarId], references: [id])
-  enrollments     Enrollment[]
-  schedules       Schedule[]
-  classMaterials  ClassMaterial[]
-  achievements    Achievement[]
-  announcements   Announcement[]
+  pengajar       User            @relation("PengajarClasses", fields: [pengajarId], references: [id])
+  enrollments    Enrollment[]
+  schedules      Schedule[]
+  classMaterials ClassMaterial[]
+  achievements   Achievement[]
+  announcements  Announcement[]
 
   @@index([pengajarId])
   @@index([status])
@@ -134,7 +134,6 @@ model Enrollment {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-
   // Relations
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   class        Class         @relation(fields: [classId], references: [id], onDelete: Cascade)
@@ -153,9 +152,9 @@ model Enrollment {
 model Schedule {
   id           String    @id @default(uuid(7))
   classId      String
-  dayOfWeek    String?   // 'senin', 'selasa', etc. for recurring
-  startTime    String    // Store as HH:mm format
-  endTime      String    // Store as HH:mm format
+  dayOfWeek    String? // 'senin', 'selasa', etc. for recurring
+  startTime    String // Store as HH:mm format
+  endTime      String // Store as HH:mm format
   location     String?
   roomNumber   String?
   isRecurring  Boolean   @default(true)
@@ -179,11 +178,10 @@ model Attendance {
   enrollmentId   String
   scheduleId     String
   attendanceDate DateTime
-  checkInTime    String?  // Store as HH:mm:ss format
-  status         String   // 'present', 'absent', 'late', 'excused'
+  checkInTime    String? // Store as HH:mm:ss format
+  status         String // 'present', 'absent', 'late', 'excused'
   notes          String?
   createdAt      DateTime @default(now())
-
 
   // Relations
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
@@ -201,10 +199,10 @@ model Material {
   id          String   @id @default(uuid(7))
   title       String
   description String?
-  category    String   // 'tahsin', 'tajwid', 'tahfidz', 'teori'
-  contentType String   // 'pdf', 'video', 'audio', 'text'
+  category    String // 'tahsin', 'tajwid', 'tahfidz', 'teori'
+  contentType String // 'pdf', 'video', 'audio', 'text'
   fileUrl     String?
-  duration    Int?     // in minutes
+  duration    Int? // in minutes
   orderIndex  Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -263,20 +261,20 @@ model Progress {
 }
 
 model Assessment {
-  id                 String   @id @default(uuid(7))
-  enrollmentId       String
-  evaluatorId        String
-  assessmentType     String   // 'tahsin', 'tajwid', 'tahfidz', 'ujian'
-  category           String   // 'harian', 'mingguan', 'bulanan', 'semester'
-  score              Float
-  maxScore           Float    @default(100)
-  grade              String?  // 'A', 'B', 'C', 'D', 'E'
-  criteria           Json?    // Detailed evaluation criteria
-  feedback           String?
-  audioRecordingUrl  String?
-  assessmentDate     DateTime
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id                String   @id @default(uuid(7))
+  enrollmentId      String
+  evaluatorId       String
+  assessmentType    String // 'tahsin', 'tajwid', 'tahfidz', 'ujian'
+  category          String // 'harian', 'mingguan', 'bulanan', 'semester'
+  score             Float
+  maxScore          Float    @default(100)
+  grade             String? // 'A', 'B', 'C', 'D', 'E'
+  criteria          Json? // Detailed evaluation criteria
+  feedback          String?
+  audioRecordingUrl String?
+  assessmentDate    DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   // Relations
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
@@ -295,7 +293,7 @@ model Achievement {
   classId      String
   title        String
   description  String?
-  badgeType    String   // 'completion', 'excellence', 'consistency', 'milestone'
+  badgeType    String // 'completion', 'excellence', 'consistency', 'milestone'
   iconUrl      String?
   earnedAt     DateTime @default(now())
   createdAt    DateTime @default(now())
@@ -313,16 +311,16 @@ model Achievement {
 // Komunikasi dan notifikasi
 
 model Notification {
-  id       String    @id @default(uuid(7))
-  userId   String
-  title    String
-  message  String
-  type     String    // 'schedule', 'assessment', 'announcement', 'reminder'
-  priority String    @default("medium") // 'low', 'medium', 'high'
-  isRead   Boolean   @default(false)
-  metadata Json?
-  createdAt DateTime @default(now())
-  readAt   DateTime?
+  id        String    @id @default(uuid(7))
+  userId    String
+  title     String
+  message   String
+  type      String // 'schedule', 'assessment', 'announcement', 'reminder'
+  priority  String    @default("medium") // 'low', 'medium', 'high'
+  isRead    Boolean   @default(false)
+  metadata  Json?
+  createdAt DateTime  @default(now())
+  readAt    DateTime?
 
   // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -340,7 +338,7 @@ model Announcement {
   classId        String?
   title          String
   content        String
-  targetAudience String    // 'all', 'pengajar', 'mahasiswa', 'class_specific'
+  targetAudience String // 'all', 'pengajar', 'mahasiswa', 'class_specific'
   isPinned       Boolean   @default(false)
   publishedAt    DateTime  @default(now())
   expiresAt      DateTime?
@@ -371,9 +369,9 @@ model Message {
   readAt      DateTime?
 
   // Relations
-  sender    User     @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
-  recipient User     @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
-  replyTo   Message? @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  sender    User      @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User      @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  replyTo   Message?  @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
   replies   Message[] @relation("MessageReplies")
 
   @@index([senderId])
