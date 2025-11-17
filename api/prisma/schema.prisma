@@ -132,3 +132,19 @@ model ClassMaterial {
   isRequired Boolean  @default(true)
   assignedAt DateTime @default(now())
 }
+
+model Progress {
+  id                   String    @id @default(uuid())
+  enrollmentId         String
+  materialId           String?
+  juzNumber            Int?
+  surahName            String?
+  ayahStart            Int?
+  ayahEnd              Int?
+  completionPercentage Float     @default(0)
+  status               String    @default("not_started") // 'not_started', 'in_progress', 'completed', 'mastered'
+  lastStudiedAt        DateTime?
+  notes                String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
