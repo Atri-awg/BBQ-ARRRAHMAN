@@ -124,3 +124,11 @@ model Material {
   updatedAt   DateTime @updatedAt
 }
 
+model ClassMaterial {
+  id         String   @id @default(uuid())
+  classId    String
+  materialId String
+  orderIndex Int      @default(0)
+  isRequired Boolean  @default(true)
+  assignedAt DateTime @default(now())
+}
