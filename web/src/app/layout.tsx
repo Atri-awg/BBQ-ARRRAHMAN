@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import styles from "./bbq/bbq.module.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,7 +27,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <header className={styles.header}>
+
+          {/* image */}
+        </header>
         {children}
+
+
+        {/* Footer */}
+        <footer className={styles.footer}>&copy; AR - RAHMAN ANGKATAN 2023 </footer>
       </body>
     </html>
   );
