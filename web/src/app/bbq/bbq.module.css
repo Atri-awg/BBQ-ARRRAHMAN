@@ -9,6 +9,12 @@
     align-items: center;
 }
 
+.content {
+    padding: 20px;
+    line-height: 20px;
+
+}
+
 .footer {
     background-color: skyblue;
     text-align: center;
@@ -17,3 +23,4 @@
     bottom: 0;
     width: 100%;
 }
+
