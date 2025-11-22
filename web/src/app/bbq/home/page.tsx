@@ -5,7 +5,7 @@ export default function HomePage() {
     <>
       {/* Tombol Login */}
       <nav className="mt-2.5 mx-5 flex md:justify-end sm:justify-start justify-center">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button className="bg-sky-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Login
         </button>
       </nav>
