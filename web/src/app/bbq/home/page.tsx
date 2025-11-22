@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "../bbq.module.css";
+import React from "react";
 
 export default function HomePage() {
   return (

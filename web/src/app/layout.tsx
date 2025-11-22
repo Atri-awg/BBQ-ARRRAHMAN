@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import styles from "./bbq/bbq.module.css";
+import styles from "./(dasboard)/dashboard.module.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
