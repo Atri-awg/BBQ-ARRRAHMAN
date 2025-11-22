@@ -1,5 +1,5 @@
 .header {
-    background-color: skyblue;
+    background-color: #1C3D5A;
     padding: 10px;
     height: 50px;
     position: sticky;
@@ -16,10 +16,12 @@
 }
 
 .footer {
-    background-color: skyblue;
+    background-color: #0F2537;
     text-align: center;
     padding: 10px;
     position: fixed;
     bottom: 0;
     width: 100%;
+    color: white;
 }
+
