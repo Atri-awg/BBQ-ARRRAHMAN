@@ -61,8 +61,17 @@ export default function LoginPage() {
               <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
                 Masuk
               </Button>
+
+              {/* Daftar */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              Belum Punya Akun?
+            </p>
+          </div>
             </form>
           </section>
+          
+          
 
 {/* footer */}
           <footer className="px-6 py-6 text-center">
