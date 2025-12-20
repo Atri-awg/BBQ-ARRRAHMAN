@@ -1,74 +1,86 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { Mail, Lock, LogIn } from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import { Mail, Lock } from "lucide-react";
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card } from '@/components/ui/card';
-
-export const metadata = {
-  title: 'Masuk - Bimbingan Belajar Al - Qur\'an',
-};
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
 
 export default function LoginPage() {
   return (
-    <>
-    <article className='min-h-screen flex items-center justify-center bg-slate-100 px-4'>
-      <Card className='w-full max-w-md shadow-lg'>
-
-
-        {/* Header */}
-        <section className='px-6 pt-8 text-center'>
-          <h2 className='text-2xl font-semibold text-slate-800'>
-            Masuk
-          </h2>
-          <p className='text-sm text-muted-foreground'>
-            Bimbingan Belajar Al - Qur&apos;an
-          </p>
-        </section>
-    {/* Content */}
-    <section className='px-6 mt-6 space-y-6'>
-      {/* alert */}
-      <div className='flex items-center gap-2 rounded-lg
-                         bg-emerald-50 border border-emerald-200
-                         px-4 py-3 text-sm text-emerald-700'>
-      <LogIn className='h-4 w-4'>
-        Silahkan Login untuk masuk!
-      </LogIn>
-      </div>
+    <main className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
       
-      <form className='space-y-4'>
-        <section className='space-y-1'>
-          <Label>Npm</Label>
-          <div className='relative'> 
-            <Input className='pl-10'></Input>
-          </div>
-          </section> 
+      <article className="w-full max-w-md">
+        <Card className="shadow-lg">
 
-          <section className='space-y-1'>
-            <Label>Password</Label>
-            <div className='relative'>
-              <Lock className='absolute left-3 top-2.5 h-4 w-4'></Lock>
-              <Input type='password' className='pl-10'></Input>
-            </div>
+{/* header */}
+          <header className="px-6 pt-8 text-center">
+            <h2 className="text-2xl font-semibold text-slate-800">
+              Masuk
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Bimbingan Belajar Al-Qur&apos;an
+            </p>
+          </header>
+
+{/* content */}
+          <section className="px-6 mt-6">
+            <form className="space-y-4">
+
+              {/* Email */}
+              <div className="space-y-1">
+                <Label htmlFor="email">Email</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="admin@bbq-arrahman.id"
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div className="space-y-1">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+
+              <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
+                Masuk
+              </Button>
+            </form>
           </section>
-      </form>
 
+{/* footer */}
+          <footer className="px-6 py-6 text-center">
+            <Link
+              href="/"
+              className="text-sm text-emerald-600 hover:underline"
+            >
+              Kembali ke Beranda
+            </Link>
 
-    </section>
+            <p className="text-xs text-muted-foreground mt-3">
+              © {new Date().getFullYear()} BBQ Ar-Rahman
+            </p>
+          </footer>
 
-        
+        </Card>
+      </article>
 
-      </Card>
-
-
-
-
-    </article>
-     
-    </>
+    </main>
   );
 }
