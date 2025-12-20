@@ -38,6 +38,7 @@ export default function LoginPage() {
       <LogIn className='h-4 w-4'>
         Silahkan Login untuk masuk!
       </LogIn>
+      </div>
       
       <form className='space-y-4'>
         <section className='space-y-1'>
@@ -54,10 +55,9 @@ export default function LoginPage() {
               <Input type='password' className='pl-10'></Input>
             </div>
           </section>
-
       </form>
 
-      </div>
+
     </section>
 
         
