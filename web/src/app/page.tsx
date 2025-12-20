@@ -15,7 +15,7 @@ export default function HomePage() {
             href="/login"
             className="px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors inline-block"
           >
-            Login
+            Masuk
           </Link>
           <Link 
             href="/admin" 
