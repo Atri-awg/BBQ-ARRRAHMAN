@@ -1,68 +1,132 @@
-import { PrismaClient } from "@/generated/prisma"
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { ApiResponse, asyncHandler, getPaginationParams, createPaginationMeta, generateCode } from '@/lib/utils';
+import { createClassSchema } from '@/lib/validators';
+import { HTTP_STATUS } from '@/lib/constants';
 
-// buat variabel prisma (PrismaClient)
-const prisma = new PrismaClient()
+// GET /api/kelas - Get all classes
+export const GET = asyncHandler(async (req: Request) => {
+  const { searchParams } = new URL(req.url);
+  const { skip, take, page, limit } = getPaginationParams(searchParams);
+  
+  // Filters
+  const search = searchParams.get('search') || '';
+  const type = searchParams.get('type') || '';
+  const level = searchParams.get('level') || '';
+  const status = searchParams.get('status') || '';
+  const pengajarId = searchParams.get('pengajarId') || '';
 
-// buat service GET
-export const GET = async () => {
-    // buat variabel untuk menampilkan data kelas
-    const kelas = await prisma.class.findMany({
-        orderBy: {
-            id: "asc"
-        }
-    })
-    // tampilkan hasil data barang
-    return NextResponse.json({
-        kelas: kelas
-    })
-}
+  // Build where clause
+  const where: any = {};
+  
+  if (search) {
+    where.OR = [
+      { name: { contains: search, mode: 'insensitive' } },
+      { code: { contains: search, mode: 'insensitive' } },
+    ];
+  }
 
+  if (type) where.type = type;
+  if (level) where.level = level;
+  if (status) where.status = status;
+  if (pengajarId) where.pengajarId = pengajarId;
 
-// buat service POST (simpan data)
-export const POST = async (request: NextRequest) => {
-    const data = await request.json()
+  // Get total count
+  const total = await prisma.class.count({ where });
 
-    // cek apakah kode barang sudah ada / belum
-    const check = await prisma.class.findFirst({
-        where: {
-            id: data.id
-        },
+  // Get classes
+  const classes = await prisma.class.findMany({
+    where,
+    skip,
+    take,
+    orderBy: { createdAt: 'desc' },
+    include: {
+      pengajar: {
         select: {
-            id: true,            
-        }
-    })
-    // jika data ditemukan
-    if (check) {
-        return NextResponse.json({
-            message: "Data Barang Gagal Disimpan (Kode Sudah Dipakai !)",
-            success: false
-        })
-    }
-    // jika data tidak ditemukan
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+      _count: {
+        select: {
+          enrollments: true,
+          schedules: true,
+        },
+      },
+    },
+  });
 
-    // simpan data
-    await prisma.class.create({
-        data: {
-            id: data.id,
-            name: data.name,
-            code: data.code,
-            description: data.description,
-            pengajarId: data.pengajarId,
-            level: data.level,
-            type: data.type,
-            capacity: data.capacity,
-            currentEnrollment: data.currentEnrollment,
-            status: data.status,
-            startDate: data.startDate,
-            endDate: data.endDate,
-        }
-    })
+  return ApiResponse.success({
+    classes,
+    pagination: createPaginationMeta(total, page, limit),
+  });
+});
 
-    return NextResponse.json({
-        message: "Data Barang Berhasil Disimpan",
-        success: true
-    })
+// POST /api/kelas - Create new class
+export const POST = asyncHandler(async (req: Request) => {
+  const body = await req.json();
 
+  // Validate input
+  const validation = createClassSchema.safeParse(body);
+  if (!validation.success) {
+    return ApiResponse.error('Validation error', HTTP_STATUS.BAD_REQUEST, validation.error.issues);
+  }
 
-}
+  const data = validation.data;
+
+  // Check if code already exists
+  const existingClass = await prisma.class.findUnique({
+    where: { code: data.code },
+  });
+
+  if (existingClass) {
+    return ApiResponse.conflict('Kode kelas sudah digunakan');
+  }
+
+  // Verify pengajar exists
+  const pengajar = await prisma.user.findUnique({
+    where: { id: data.pengajarId },
+    include: {
+      userRoles: {
+        include: { role: true },
+      },
+    },
+  });
+
+  if (!pengajar) {
+    return ApiResponse.notFound('Pengajar tidak ditemukan');
+  }
+
+  // Verify pengajar has correct role
+  const isPengajar = pengajar.userRoles.some(ur => ur.role.name === 'pengajar');
+  if (!isPengajar) {
+    return ApiResponse.error('User bukan pengajar', HTTP_STATUS.BAD_REQUEST);
+  }
+
+  // Create class
+  const newClass = await prisma.class.create({
+    data: {
+      name: data.name,
+      code: data.code,
+      description: data.description,
+      pengajarId: data.pengajarId,
+      level: data.level,
+      type: data.type,
+      capacity: data.capacity,
+      startDate: new Date(data.startDate),
+      endDate: data.endDate ? new Date(data.endDate) : null,
+    },
+    include: {
+      pengajar: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return ApiResponse.created(newClass, 'Kelas berhasil dibuat');
+});
