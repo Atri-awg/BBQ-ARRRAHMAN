@@ -35,9 +35,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import useSWR from "swr";
 import axios from "axios";
+import { api_users } from "@/lib/strings";
 
 // Interface untuk data user
-interface User {
+interface users {
   id: string;
   name: string;
   email: string;
@@ -49,8 +50,7 @@ interface User {
   createdAt: string;
 }
 
-// API endpoint - sesuaikan dengan backend Anda
-const api_users = "/api/users";
+
 
 // Fetcher function untuk SWR
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -110,7 +110,7 @@ export default function AdminUsersPage() {
 
   // Filter users
   const filteredUsers = data?.users
-    ? data.users.filter((user: User) => {
+    ? data.users.filter((user: users) => {
         const matchSearch =
           user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           user.email.toLowerCase().includes(searchTerm.toLowerCase());
@@ -139,9 +139,9 @@ export default function AdminUsersPage() {
 
   // Statistics calculations
   const totalUsers = data?.users?.length || 0;
-  const totalMahasiswa = data?.users?.filter((u: User) => u.role === "mahasiswa").length || 0;
-  const totalPengajar = data?.users?.filter((u: User) => u.role === "pengajar").length || 0;
-  const totalActive = data?.users?.filter((u: User) => u.status === "active").length || 0;
+  const totalMahasiswa = data?.users?.filter((u: users) => u.role === "mahasiswa").length || 0;
+  const totalPengajar = data?.users?.filter((u: users) => u.role === "pengajar").length || 0;
+  const totalActive = data?.users?.filter((u: users) => u.status === "active").length || 0;
 
   return (
     <div className="space-y-6">
@@ -288,7 +288,7 @@ export default function AdminUsersPage() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  filteredUsers.map((user: User) => (
+                  filteredUsers.map((user: users) => (
                     <TableRow
                       key={user.id}
                       className="hover:bg-gray-50 transition-colors"
