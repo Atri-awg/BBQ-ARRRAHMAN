@@ -567,22 +567,44 @@ export default function LandingPage() {
 
 
 
+{/* CTA Section */}
+<section className="bg-gradient-to-br from-primary to-emerald-700 text-white py-24">
+  <div className="container mx-auto px-4 text-center">
+    <h2 className="text-4xl font-bold mb-6">
+      Siap Mengikuti Program BBQ Ar-Rahman?
+    </h2>
 
-      {/* CTA Section */}
-      <section className="bg-primary text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Mulai Perjalanan Belajar Anda</h2>
-          <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-            Bergabunglah dengan ribuan santri lainnya dalam mempelajari Al-Quran dengan metode yang tepat
-          </p>
-          <Link href="/register">
-            <Button size="lg" variant="secondary" className="gap-2">
-              Daftar Gratis Sekarang
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      </section>
+    <p className="text-lg max-w-3xl mx-auto mb-10 opacity-90">
+      Program BBQ merupakan bagian dari mata kuliah Pendidikan Agama Islam
+      yang dirancang untuk membantu mahasiswa meningkatkan kemampuan membaca
+      Al-Qur’an secara terarah, terstruktur, dan berkelanjutan.
+    </p>
+
+    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      <Link href="/register">
+        <Button
+          size="lg"
+          variant="secondary"
+          className="gap-2 px-8 py-6 text-base font-semibold"
+        >
+          Daftar Program BBQ
+          <ArrowRight className="h-5 w-5" />
+        </Button>
+      </Link>
+
+      <Link href="/login">
+        <Button
+          size="lg"
+          variant="outline"
+          className="gap-2 px-8 py-6 text-base font-semibold text-white border-white hover:bg-white hover:text-primary"
+        >
+          Masuk ke Akun
+        </Button>
+      </Link>
+    </div>
+  </div>
+</section>
+
 
       {/* Footer */}
       <footer className="bg-gray-100 py-8">
