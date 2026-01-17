@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Users, Award, TrendingUp, ArrowRight } from 'lucide-react';
@@ -409,6 +410,105 @@ export default function LandingPage() {
     </div>
   </div>
 </section>
+
+{/* Dokumentasi Kegiatan Wajib BBQ */}
+<section className="py-20 bg-gray-50">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-14">
+      <h2 className="text-3xl font-bold mb-4">
+        Dokumentasi Kegiatan Wajib BBQ
+      </h2>
+      <p className="text-muted-foreground max-w-3xl mx-auto">
+        Program BBQ Ar-Rahman tidak hanya berfokus pada pembelajaran baca
+        Al-Qur’an, tetapi juga dilengkapi dengan berbagai kegiatan pembinaan
+        yang wajib diikuti oleh mahasiswa.
+      </p>
+    </div>
+
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+      {/* Opening BBQ */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+        <div className="relative aspect-[4/3]">
+          <Image
+            src="/images/dokumentasi/opening-bbq.jpg"
+            alt="Opening BBQ"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="p-4">
+          <h3 className="font-semibold mb-2">Opening BBQ</h3>
+          <p className="text-sm text-muted-foreground">
+            Kegiatan pembukaan resmi program BBQ sebagai awal rangkaian
+            bimbingan baca Al-Qur’an.
+          </p>
+        </div>
+      </div>
+
+      {/* Mabit & Jalasah Ruhiyah */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+        <div className="relative aspect-[4/3]">
+          <Image
+            src="/images/dokumentasi/mabit-bbq.jpg"
+            alt="Mabit & Jalasah Ruhiyah BBQ"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="p-4">
+          <h3 className="font-semibold mb-2">
+            Mabit & Jalasah Ruhiyah BBQ
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Kegiatan pembinaan ruhiyah untuk meningkatkan keimanan,
+            kebersamaan, dan karakter Islami mahasiswa.
+          </p>
+        </div>
+      </div>
+
+      {/* Self Development */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+        <div className="relative aspect-[4/3]">
+          <Image
+            src="/images/dokumentasi/self-development.jpg"
+            alt="Self Development BBQ"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="p-4">
+          <h3 className="font-semibold mb-2">Self Development BBQ</h3>
+          <p className="text-sm text-muted-foreground">
+            Kegiatan pengembangan diri yang membekali mahasiswa dengan nilai
+            kepemimpinan dan tanggung jawab.
+          </p>
+        </div>
+      </div>
+
+      {/* Kegiatan Pendukung */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+        <div className="relative aspect-[4/3] bg-gray-100 flex items-center justify-center text-sm text-muted-foreground">
+          <Image
+            src="/images/dokumentasi/other.jpg"
+            alt="Kegiatan Pendukung BBQ"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="p-4">
+          <h3 className="font-semibold mb-2">
+            Kegiatan Pendukung Lainnya
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Berbagai kegiatan pendukung yang menunjang proses pembelajaran
+            dan pembinaan mahasiswa selama program BBQ berlangsung. Contohnya Kajian Rutin
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 {/* FAQ Section */}
 <section className="py-20">
