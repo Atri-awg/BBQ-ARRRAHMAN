@@ -83,40 +83,58 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Mengapa Memilih Kami?</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Kami menyediakan sistem pembelajaran Al-Quran yang lengkap dan modern
-            </p>
-          </div>
+      {/* Pengenalan BBQ Section */}
+<section className="py-20 bg-gray-50">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl font-bold mb-4">Apa itu BBQ Ar-Rahman?</h2>
+      <p className="text-muted-foreground max-w-3xl mx-auto">
+        BBQ (Bimbingan Baca Qur&apos;an) Ar-Rahman adalah program bimbingan belajar
+        Al-Qur&apos;an yang diselenggarakan oleh UKMI Ar-Rahman sebagai bagian dari
+        <strong> mata kuliah Pendidikan Agama Islam (PAI)</strong>.
+      </p>
+    </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <Card key={index} className="text-center">
-                  <CardHeader>
-                    <div className="flex justify-center mb-4">
-                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                        <Icon className="h-8 w-8 text-primary" />
-                      </div>
-                    </div>
-                    <CardTitle className="text-lg">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+    <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+      <Card className="text-center">
+        <CardHeader>
+          <CardTitle className="text-lg">Bagian dari SKS PAI</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            BBQ merupakan salah satu syarat akademik dalam mata kuliah Pendidikan
+            Agama Islam yang wajib diikuti oleh mahasiswa.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="text-center">
+        <CardHeader>
+          <CardTitle className="text-lg">Fokus Baca Al-Qur&apos;an</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Program ini berfokus pada peningkatan kemampuan membaca Al-Qur&apos;an,
+            meliputi tahsin, tajwid, serta pembiasaan membaca dengan benar.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="text-center">
+        <CardHeader>
+          <CardTitle className="text-lg">Bimbingan Terarah</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Mahasiswa dibimbing langsung oleh pengajar yang telah dibekali
+            kompetensi untuk mendampingi proses belajar secara bertahap.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>
+
 
       {/* CTA Section */}
       <section className="bg-primary text-white py-20">
