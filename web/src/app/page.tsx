@@ -410,6 +410,60 @@ export default function LandingPage() {
   </div>
 </section>
 
+{/* FAQ Section */}
+<section className="py-20">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-14">
+      <h2 className="text-3xl font-bold mb-4">
+        Pertanyaan yang Sering Diajukan
+      </h2>
+      <p className="text-muted-foreground max-w-3xl mx-auto">
+        Berikut beberapa pertanyaan umum terkait program BBQ Ar-Rahman
+        yang sering ditanyakan oleh mahasiswa.
+      </p>
+    </div>
+
+    <div className="max-w-4xl mx-auto space-y-4">
+      {[
+        {
+          q: "Apakah BBQ wajib diikuti oleh mahasiswa?",
+          a: "Ya. Program BBQ merupakan bagian dari mata kuliah Pendidikan Agama Islam (PAI) dan wajib diikuti sebagai salah satu syarat akademik.",
+        },
+        {
+          q: "Bagaimana jika saya belum lancar membaca Al-Qur’an?",
+          a: "Tidak perlu khawatir. Program BBQ dirancang untuk membimbing mahasiswa dari berbagai tingkat kemampuan membaca.",
+        },
+        {
+          q: "Apakah BBQ mempengaruhi nilai mata kuliah PAI?",
+          a: "Ya. Keikutsertaan dan hasil evaluasi dalam program BBQ menjadi bagian dari penilaian mata kuliah PAI.",
+        },
+        {
+          q: "Berapa lama program BBQ dilaksanakan?",
+          a: "Durasi program BBQ menyesuaikan dengan ketentuan mata kuliah PAI dan jadwal yang telah ditetapkan oleh pengelola.",
+        },
+        {
+          q: "Siapa yang membimbing selama program BBQ?",
+          a: "Mahasiswa akan dibimbing oleh pengajar yang telah dibekali kompetensi dalam bimbingan baca Al-Qur’an.",
+        },
+      ].map((item, index) => (
+        <Card key={index}>
+          <CardHeader>
+            <CardTitle className="text-base">
+              {item.q}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              {item.a}
+            </p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>
+
+
 
 
 
