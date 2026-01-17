@@ -138,6 +138,68 @@ export default function LandingPage() {
   </div>
 </section>
 
+{/* Alur BBQ Section */}
+<section className="py-20">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-14">
+      <h2 className="text-3xl font-bold mb-4">
+        Alur Mengikuti Program BBQ
+      </h2>
+      <p className="text-muted-foreground max-w-2xl mx-auto">
+        Program BBQ dirancang dengan alur yang jelas dan terstruktur
+        untuk membantu mahasiswa menyelesaikan kewajiban akademik
+        dalam mata kuliah Pendidikan Agama Islam.
+      </p>
+    </div>
+
+    <div className="grid gap-6 md:grid-cols-5 max-w-6xl mx-auto">
+      {[
+        {
+          step: "01",
+          title: "Daftar Akun",
+          desc: "Mahasiswa melakukan pendaftaran akun pada sistem BBQ Ar-Rahman.",
+        },
+        {
+          step: "02",
+          title: "Penempatan Kelompok",
+          desc: "Mahasiswa ditempatkan ke dalam Kelompok sesuai kemampuan membaca.",
+        },
+        {
+          step: "03",
+          title: "Proses Bimbingan",
+          desc: "Bimbingan baca Al-Qur’an bersama Tutor secara bertahap.",
+        },
+        {
+          step: "04",
+          title: "Evaluasi",
+          desc: "Pengajar melakukan penilaian berdasarkan perkembangan mahasiswa.",
+        },
+        {
+          step: "05",
+          title: "Lulus BBQ",
+          desc: "Mahasiswa dinyatakan lulus sebagai syarat mata kuliah PAI.",
+        },
+      ].map((item) => (
+        <Card key={item.step} className="text-center relative">
+          <CardHeader>
+            <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+              {item.step}
+            </div>
+            <CardTitle className="text-base">
+              {item.title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              {item.desc}
+            </p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* CTA Section */}
       <section className="bg-primary text-white py-20">
