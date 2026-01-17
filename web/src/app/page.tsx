@@ -282,6 +282,67 @@ export default function LandingPage() {
   </div>
 </section>
 
+{/* Peran BBQ dalam Mata Kuliah PAI */}
+<section className="py-20">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-14">
+      <h2 className="text-3xl font-bold mb-4">
+        Peran BBQ dalam Mata Kuliah PAI
+      </h2>
+      <p className="text-muted-foreground max-w-3xl mx-auto">
+        Program BBQ Ar-Rahman memiliki peran penting dalam mendukung
+        pelaksanaan mata kuliah Pendidikan Agama Islam sebagai bentuk
+        pembinaan kemampuan baca Al-Qur’an mahasiswa.
+      </p>
+    </div>
+
+    <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+      <Card className="text-center">
+        <CardHeader>
+          <CardTitle className="text-lg">
+            Pendamping Pembelajaran PAI
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            BBQ berfungsi sebagai program pendamping yang membantu mahasiswa
+            mencapai kompetensi baca Al-Qur’an yang ditetapkan dalam mata kuliah PAI.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="text-center">
+        <CardHeader>
+          <CardTitle className="text-lg">
+            Syarat Akademik Kelulusan
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Keikutsertaan dan kelulusan dalam program BBQ menjadi salah satu
+            syarat akademik yang harus dipenuhi oleh mahasiswa.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="text-center">
+        <CardHeader>
+          <CardTitle className="text-lg">
+            Terintegrasi dengan Sistem Akademik
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Pelaksanaan BBQ terintegrasi dengan sistem akademik kampus dan
+            dikelola secara terstruktur oleh UKMI Ar-Rahman.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>
+
+
 
 
       {/* CTA Section */}
