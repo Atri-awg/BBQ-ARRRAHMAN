@@ -121,8 +121,6 @@ export default function LoginPage() {
                 )}
               </Button>
             </form>
-
-            
           </CardContent>
         </Card>
       </div>
@@ -135,7 +133,7 @@ export default function LoginPage() {
 
         <div className="relative z-10 max-w-md text-center space-y-6 px-6">
           <h2 className="text-4xl font-bold tracking-tight">
-            Welcome!
+            Assalamualaikum
           </h2>
           <p className="text-white/80">
             Masuk dan mulai perjalanan belajar membaca Al-Qur’an
