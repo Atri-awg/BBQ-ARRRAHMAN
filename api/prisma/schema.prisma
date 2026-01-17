@@ -1,31 +1,29 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
-// Skema menejemen user
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+//
+// =========================
+// USER & AUTH
+// =========================
+//
+
 model User {
-  id        String    @id @default(uuid(7))
-  email     String    @unique
+  id        String   @id @default(uuid())
+  email     String   @unique
   password  String
   name      String
-  isActive  Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   lastLogin DateTime?
 
-  // Relations
   profile              Profile?
   userRoles            UserRole[]
   teachingClasses      Class[]        @relation("PengajarClasses")
@@ -42,18 +40,17 @@ model User {
 }
 
 model Profile {
-  id          String    @id @default(uuid(7))
-  userId      String    @unique
+  id          String   @id @default(uuid())
+  userId      String   @unique
   phoneNumber String?
   address     String?
   dateOfBirth DateTime?
-  gender      String? // 'Laki', 'Perempuan'
+  gender      String?
   photoUrl    String?
   bio         String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -61,13 +58,12 @@ model Profile {
 }
 
 model Role {
-  id          String   @id @default(uuid(7))
-  name        String   @unique // 'admin', 'pengajar', 'mahasiswa'
+  id          String   @id @default(uuid())
+  name        String   @unique
   description String?
   permissions Json?
   createdAt   DateTime @default(now())
 
-  // Relations
   userRoles UserRole[]
 
   @@index([name])
@@ -75,12 +71,11 @@ model Role {
 }
 
 model UserRole {
-  id         String   @id @default(uuid(7))
+  id         String   @id @default(uuid())
   userId     String
   roleId     String
   assignedAt DateTime @default(now())
 
-  // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
@@ -90,25 +85,28 @@ model UserRole {
   @@map("user_roles")
 }
 
-// Skema kelas 
+//
+// =========================
+// CLASS & ENROLLMENT
+// =========================
+//
 
 model Class {
-  id                String    @id @default(uuid(7))
+  id                String   @id @default(uuid())
   name              String
-  code              String    @unique
+  code              String   @unique
   description       String?
   pengajarId        String
-  level             String // 'pemula', 'menengah', 'lanjut'
-  type              String // 'tahsin', 'tajwid', 'tahfidz'
-  capacity          Int       @default(20)
-  currentEnrollment Int       @default(0)
-  status            String    @default("active") // 'active', 'inactive', 'completed'
+  level             String
+  type              String
+  capacity          Int      @default(20)
+  currentEnrollment Int      @default(0)
+  status            String   @default("active")
   startDate         DateTime
   endDate           DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-  // Relations
   pengajar       User            @relation("PengajarClasses", fields: [pengajarId], references: [id])
   enrollments    Enrollment[]
   schedules      Schedule[]
@@ -124,19 +122,18 @@ model Class {
 }
 
 model Enrollment {
-  id          String    @id @default(uuid(7))
+  id          String   @id @default(uuid())
   userId      String
   classId     String
-  status      String    @default("active") // 'active', 'completed', 'dropped'
-  enrolledAt  DateTime  @default(now())
+  status      String   @default("active")
+  enrolledAt  DateTime @default(now())
   completedAt DateTime?
   finalGrade  Float?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  // Relations
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  class        Class         @relation(fields: [classId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class        Class        @relation(fields: [classId], references: [id], onDelete: Cascade)
   attendances  Attendance[]
   progresses   Progress[]
   assessments  Assessment[]
@@ -150,20 +147,19 @@ model Enrollment {
 }
 
 model Schedule {
-  id           String    @id @default(uuid(7))
+  id           String   @id @default(uuid())
   classId      String
-  dayOfWeek    String? // 'senin', 'selasa', etc. for recurring
-  startTime    String // Store as HH:mm format
-  endTime      String // Store as HH:mm format
+  dayOfWeek    String?
+  startTime    String
+  endTime      String
   location     String?
   roomNumber   String?
-  isRecurring  Boolean   @default(true)
-  specificDate DateTime? // For non-recurring schedules
-  status       String    @default("scheduled") // 'scheduled', 'completed', 'cancelled'
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  isRecurring  Boolean  @default(true)
+  specificDate DateTime?
+  status       String   @default("scheduled")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  // Relations
   class       Class        @relation(fields: [classId], references: [id], onDelete: Cascade)
   attendances Attendance[]
 
@@ -174,16 +170,15 @@ model Schedule {
 }
 
 model Attendance {
-  id             String   @id @default(uuid(7))
+  id             String   @id @default(uuid())
   enrollmentId   String
   scheduleId     String
   attendanceDate DateTime
-  checkInTime    String? // Store as HH:mm:ss format
-  status         String // 'present', 'absent', 'late', 'excused'
+  checkInTime    String?
+  status         String
   notes          String?
   createdAt      DateTime @default(now())
 
-  // Relations
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   schedule   Schedule   @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
 
@@ -195,19 +190,24 @@ model Attendance {
   @@map("attendances")
 }
 
+//
+// =========================
+// MATERIAL & PROGRESS
+// =========================
+//
+
 model Material {
-  id          String   @id @default(uuid(7))
+  id          String   @id @default(uuid())
   title       String
   description String?
-  category    String // 'tahsin', 'tajwid', 'tahfidz', 'teori'
-  contentType String // 'pdf', 'video', 'audio', 'text'
+  category    String
+  contentType String
   fileUrl     String?
-  duration    Int? // in minutes
+  duration    Int?
   orderIndex  Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // Relations
   classMaterials ClassMaterial[]
   progresses     Progress[]
 
@@ -217,14 +217,13 @@ model Material {
 }
 
 model ClassMaterial {
-  id         String   @id @default(uuid(7))
+  id         String   @id @default(uuid())
   classId    String
   materialId String
   orderIndex Int      @default(0)
   isRequired Boolean  @default(true)
   assignedAt DateTime @default(now())
 
-  // Relations
   class    Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
   material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
 
@@ -235,21 +234,20 @@ model ClassMaterial {
 }
 
 model Progress {
-  id                   String    @id @default(uuid(7))
+  id                   String   @id @default(uuid())
   enrollmentId         String
   materialId           String?
   juzNumber            Int?
   surahName            String?
   ayahStart            Int?
   ayahEnd              Int?
-  completionPercentage Float     @default(0)
-  status               String    @default("not_started") // 'not_started', 'in_progress', 'completed', 'mastered'
+  completionPercentage Float    @default(0)
+  status               String   @default("not_started")
   lastStudiedAt        DateTime?
   notes                String?
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 
-  // Relations
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   material   Material?  @relation(fields: [materialId], references: [id], onDelete: SetNull)
 
@@ -260,23 +258,27 @@ model Progress {
   @@map("progresses")
 }
 
-model Assessment {
-  id                String   @id @default(uuid(7))
-  enrollmentId      String
-  evaluatorId       String
-  assessmentType    String // 'tahsin', 'tajwid', 'tahfidz', 'ujian'
-  category          String // 'harian', 'mingguan', 'bulanan', 'semester'
-  score             Float
-  maxScore          Float    @default(100)
-  grade             String? // 'A', 'B', 'C', 'D', 'E'
-  criteria          Json? // Detailed evaluation criteria
-  feedback          String?
-  audioRecordingUrl String?
-  assessmentDate    DateTime
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+//
+// =========================
+// ASSESSMENT & ACHIEVEMENT
+// =========================
+//
 
-  // Relations
+model Assessment {
+  id             String   @id @default(uuid())
+  enrollmentId   String
+  evaluatorId    String
+  assessmentType String
+  category       String
+  score          Float
+  maxScore       Float    @default(100)
+  grade          String?
+  criteria       Json?
+  feedback       String?
+  assessmentDate DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   evaluator  User       @relation("Evaluator", fields: [evaluatorId], references: [id])
 
@@ -288,17 +290,15 @@ model Assessment {
 }
 
 model Achievement {
-  id           String   @id @default(uuid(7))
+  id           String   @id @default(uuid())
   enrollmentId String
   classId      String
   title        String
   description  String?
-  badgeType    String // 'completion', 'excellence', 'consistency', 'milestone'
+  badgeType    String
   iconUrl      String?
   earnedAt     DateTime @default(now())
-  createdAt    DateTime @default(now())
 
-  // Relations
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   class      Class      @relation(fields: [classId], references: [id], onDelete: Cascade)
 
@@ -308,67 +308,66 @@ model Achievement {
   @@map("achievements")
 }
 
-// Komunikasi dan notifikasi
+//
+// =========================
+// NOTIFICATION & MESSAGE
+// =========================
+//
 
 model Notification {
-  id        String    @id @default(uuid(7))
+  id        String   @id @default(uuid())
   userId    String
   title     String
   message   String
-  type      String // 'schedule', 'assessment', 'announcement', 'reminder'
-  priority  String    @default("medium") // 'low', 'medium', 'high'
-  isRead    Boolean   @default(false)
+  type      String
+  priority  String   @default("medium")
+  isRead    Boolean  @default(false)
   metadata  Json?
-  createdAt DateTime  @default(now())
+  createdAt DateTime @default(now())
   readAt    DateTime?
 
-  // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([isRead])
   @@index([type])
-  @@index([createdAt])
   @@map("notifications")
 }
 
 model Announcement {
-  id             String    @id @default(uuid(7))
+  id             String   @id @default(uuid())
   createdBy      String
   classId        String?
   title          String
   content        String
-  targetAudience String // 'all', 'pengajar', 'mahasiswa', 'class_specific'
-  isPinned       Boolean   @default(false)
-  publishedAt    DateTime  @default(now())
+  targetAudience String
+  isPinned       Boolean  @default(false)
+  publishedAt    DateTime @default(now())
   expiresAt      DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  // Relations
   creator User   @relation("AnnouncementCreator", fields: [createdBy], references: [id])
   class   Class? @relation(fields: [classId], references: [id], onDelete: SetNull)
 
   @@index([createdBy])
   @@index([classId])
   @@index([targetAudience])
-  @@index([publishedAt])
   @@index([isPinned])
   @@map("announcements")
 }
 
 model Message {
-  id          String    @id @default(uuid(7))
+  id          String   @id @default(uuid())
   senderId    String
   recipientId String
   subject     String?
   content     String
-  isRead      Boolean   @default(false)
+  isRead      Boolean  @default(false)
   replyToId   String?
-  sentAt      DateTime  @default(now())
+  sentAt      DateTime @default(now())
   readAt      DateTime?
 
-  // Relations
   sender    User      @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
   recipient User      @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
   replyTo   Message?  @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
@@ -377,6 +376,5 @@ model Message {
   @@index([senderId])
   @@index([recipientId])
   @@index([isRead])
-  @@index([sentAt])
   @@map("messages")
 }
