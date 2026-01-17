@@ -342,6 +342,75 @@ export default function LandingPage() {
   </div>
 </section>
 
+{/* Pihak yang Terlibat Section */}
+<section className="py-20 bg-gray-50">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-14">
+      <h2 className="text-3xl font-bold mb-4">
+        Pihak yang Terlibat dalam Program BBQ
+      </h2>
+      <p className="text-muted-foreground max-w-3xl mx-auto">
+        Program BBQ Ar-Rahman melibatkan berbagai pihak yang bekerja sama
+        untuk memastikan proses pembelajaran Al-Qur’an berjalan dengan baik
+        dan terstruktur.
+      </p>
+    </div>
+
+    <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+      {/* Mahasiswa */}
+      <Card className="text-center">
+        <CardHeader>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <Users className="h-6 w-6 text-primary" />
+          </div>
+          <CardTitle className="text-lg">Mahasiswa</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Mahasiswa berperan sebagai peserta program BBQ yang mengikuti
+            proses bimbingan baca Al-Qur’an sebagai bagian dari kewajiban
+            akademik mata kuliah PAI.
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Pengajar */}
+      <Card className="text-center">
+        <CardHeader>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <BookOpen className="h-6 w-6 text-primary" />
+          </div>
+          <CardTitle className="text-lg">Tutor</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Tutor bertugas membimbing mahasiswa dalam membaca Al-Qur’an,
+            memberikan evaluasi, serta menilai perkembangan bacaan secara
+            bertahap.
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Admin */}
+      <Card className="text-center">
+        <CardHeader>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <Award className="h-6 w-6 text-primary" />
+          </div>
+          <CardTitle className="text-lg">Admin</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Admin bertanggung jawab mengelola data, penjadwalan, kelas,
+            serta memastikan pelaksanaan program BBQ berjalan sesuai ketentuan.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>
+
+
 
 
 
