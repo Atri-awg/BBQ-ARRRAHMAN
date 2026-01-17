@@ -200,6 +200,89 @@ export default function LandingPage() {
   </div>
 </section>
 
+{/* Target & Capaian Pembelajaran Section */}
+<section className="py-20 bg-gray-50">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-14">
+      <h2 className="text-3xl font-bold mb-4">
+        Target & Capaian Pembelajaran
+      </h2>
+      <p className="text-muted-foreground max-w-2xl mx-auto">
+        Melalui program BBQ Ar-Rahman, mahasiswa diharapkan mencapai
+        kompetensi dasar dalam membaca Al-Qur’an sebagai bagian dari
+        pembelajaran Pendidikan Agama Islam.
+      </p>
+    </div>
+
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+      <Card className="text-center">
+        <CardHeader>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <BookOpen className="h-6 w-6 text-primary" />
+          </div>
+          <CardTitle className="text-base">
+            Membaca Al-Qur’an dengan Benar
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Mahasiswa mampu membaca Al-Qur’an sesuai kaidah makhraj dan tajwid dasar.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="text-center">
+        <CardHeader>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <Award className="h-6 w-6 text-primary" />
+          </div>
+          <CardTitle className="text-base">
+            Memahami Tajwid Dasar
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Mahasiswa memahami dan mampu menerapkan hukum tajwid dasar dalam bacaan.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="text-center">
+        <CardHeader>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <TrendingUp className="h-6 w-6 text-primary" />
+          </div>
+          <CardTitle className="text-base">
+            Peningkatan Kualitas Bacaan
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Terjadi peningkatan kualitas bacaan Al-Qur’an secara bertahap dan terukur.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="text-center">
+        <CardHeader>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <Users className="h-6 w-6 text-primary" />
+          </div>
+          <CardTitle className="text-base">
+            Pembiasaan Membaca Al-Qur’an
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Mahasiswa terbiasa membaca Al-Qur’an secara rutin dan berkelanjutan.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>
+
+
 
       {/* CTA Section */}
       <section className="bg-primary text-white py-20">
