@@ -7,7 +7,7 @@ type LogoProps = {
 export function Logo({ size = 80 }: LogoProps) {
   return (
     <Image
-      src="web\public\images\bbq logoArtboard 1.png"
+      src="/images/logo_bbq.png"
       alt="Logo BBQ Ar-Rahman"
       width={size}
       height={size}

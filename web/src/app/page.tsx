@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Users, Award, TrendingUp, ArrowRight } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
+import { Logo } from "@/components/logo";
+
 
 export default function LandingPage() {
   const router = useRouter();
@@ -55,10 +57,11 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex justify-center mb-6">
-              <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-5xl">🕌</span>
-              </div>
-            </div>
+  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow">
+    <Logo size={64} />
+  </div>
+</div>
+
             <h1 className="text-5xl font-bold mb-6">BBQ Ar-Rahman</h1>
             <p className="text-xl text-muted-foreground mb-8">
               Sistem Akademik Bimbingan Baca Quran UKMI Ar-Rahman
