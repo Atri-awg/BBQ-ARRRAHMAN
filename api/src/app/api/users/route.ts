@@ -1,129 +1,134 @@
-import { PrismaClient } from "@/generated/prisma"
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest } from 'next/server';
+import bcrypt from 'bcryptjs';
+import { prisma } from '@/lib/prisma';
+import { ApiResponse, asyncHandler, getPaginationParams, createPaginationMeta } from '@/lib/utils';
+import { createUserSchema } from '@/lib/validators';
+import { HTTP_STATUS } from '@/lib/constants';
 
-// buat variabel prisma (PrismaClient)
-const prisma = new PrismaClient()
+// GET /api/users - Get all users with pagination and filters
+export const GET = asyncHandler(async (req: Request) => {
+  const { searchParams } = new URL(req.url);
+  const { skip, take, page, limit } = getPaginationParams(searchParams);
+  
+  // Filters
+  const search = searchParams.get('search') || '';
+  const role = searchParams.get('role') || '';
+  const isActive = searchParams.get('isActive');
 
-// buat service GET
-export const GET = async () => {
-    // buat variabel untuk menampilkan data kelas
-    const user = await prisma.user.findMany({
-        orderBy: {
-            id: "asc"
-        }
-    })
-    // tampilkan hasil data barang
-    return NextResponse.json({
-        user: user
-    })
-}
-
-
-// buat service POST (simpan data)
-// export const POST = async (request: NextRequest) => {
-//     const data = await request.json()
-
-//     // cek apakah kode barang sudah ada / belum
-//     const check = await prisma.user.findFirst({
-//         where: {
-//             id: data.id
-//         },
-//         select: {
-//             id: true,            
-//         }
-//     })
-//     // jika data ditemukan
-//     if (check) {
-//         return NextResponse.json({
-//             message: "Data Barang Gagal Disimpan (Kode Sudah Dipakai !)",
-//             success: false
-//         })
-//     }
-//     // jika data tidak ditemukan
-
-//     // simpan data
-//     await prisma.user.create({
-//         data: {
-//             id: data.id,
-//             name: data.name,
-//             email: data.email,
-//             role: data.role,
-//         }
-//     })
-
-//     return NextResponse.json({
-//         message: "Data Barang Berhasil Disimpan",
-//         success: true
-//     })
-
-
-// }
-
-
-import crypto from "crypto";
-
-// fungsi hashing TANPA dependency eksternal
-function hashPassword(password: string): string {
-  return crypto
-    .createHash("sha256")
-    .update(password)
-    .digest("hex");
-}
-
-export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const { email, password, name } = body;
-
-    // 1. Validasi input
-    if (!email || !password || !name) {
-      return NextResponse.json(
-        { message: "Email, password, dan name wajib diisi" },
-        { status: 400 }
-      );
-    }
-
-    // Cek email unik
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (existingUser) {
-      return NextResponse.json(
-        { message: "Email sudah terdaftar" },
-        { status: 409 }
-      );
-    }
-
-    // 3. Hash password
-    const hashedPassword = hashPassword(password);
-
-    // 4. Simpan user
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-        // isActive otomatis true
-        // createdAt & updatedAt otomatis
-      },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        isActive: true,
-        createdAt: true,
-      },
-    });
-
-    // 5. Response sukses
-    return NextResponse.json(user, { status: 201 });
-  } catch (error) {
-    console.error("CREATE USER ERROR:", error);
-
-    return NextResponse.json(
-      { message: "Terjadi kesalahan server" },
-      { status: 500 }
-    );
+  // Build where clause
+  const where: any = {};
+  
+  if (search) {
+    where.OR = [
+      { name: { contains: search, mode: 'insensitive' } },
+      { email: { contains: search, mode: 'insensitive' } },
+    ];
   }
-}
+
+  if (isActive !== null && isActive !== undefined && isActive !== '') {
+    where.isActive = isActive === 'true';
+  }
+
+  if (role) {
+    where.userRoles = {
+      some: {
+        role: {
+          name: role,
+        },
+      },
+    };
+  }
+
+  // Get total count
+  const total = await prisma.user.count({ where });
+
+  // Get users
+  const users = await prisma.user.findMany({
+    where,
+    skip,
+    take,
+    orderBy: { createdAt: 'desc' },
+    include: {
+      profile: true,
+      userRoles: {
+        include: {
+          role: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  // Remove passwords from response
+  const sanitizedUsers = users.map(user => {
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  });
+
+  return ApiResponse.success({
+    users: sanitizedUsers,
+    pagination: createPaginationMeta(total, page, limit),
+  });
+});
+
+// POST /api/users - Create new user
+export const POST = asyncHandler(async (req: Request) => {
+  const body = await req.json();
+
+  // Validate input
+  const validation = createUserSchema.safeParse(body);
+  if (!validation.success) {
+    return ApiResponse.error('Validation error', HTTP_STATUS.BAD_REQUEST, validation.error.issues);
+  }
+
+  const { email, password, name, roleIds, phoneNumber, address, dateOfBirth, gender } = validation.data;
+
+  // Check if email already exists
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+  if (existingUser) {
+    return ApiResponse.conflict('Email sudah terdaftar');
+  }
+
+  // Hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create user with profile and roles
+  const user = await prisma.user.create({
+    data: {
+      email,
+      password: hashedPassword,
+      name,
+      profile: {
+        create: {
+          phoneNumber,
+          address,
+          dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
+          gender,
+        },
+      },
+      userRoles: {
+        create: roleIds.map(roleId => ({
+          roleId,
+        })),
+      },
+    },
+    include: {
+      profile: true,
+      userRoles: {
+        include: {
+          role: true,
+        },
+      },
+    },
+  });
+
+  // Remove password from response
+  const { password: _, ...userWithoutPassword } = user;
+
+  return ApiResponse.created(userWithoutPassword, 'User berhasil dibuat');
+});
